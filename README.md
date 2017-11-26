@@ -1,4 +1,4 @@
-# 北邮信通院数据结构实验报告(BUPT data structutre report）
+# 北邮信通院数据结构实验报告代码(BUPT data structutre code）
 
 - **实验一** <br /> 
 
