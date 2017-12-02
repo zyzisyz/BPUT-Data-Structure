@@ -15,7 +15,7 @@ class Polynomial:public LinkList<element>
 {
 public:
 	Polynomial(element data[], int n) :LinkList(data, n){}//构造函数
-	void Add(Polynomial &B);								//求和函数
+	void Add(Polynomial &B);							//求和函数
 	void GetDerivative();								//求导数
 	void PrintFun();
 };
