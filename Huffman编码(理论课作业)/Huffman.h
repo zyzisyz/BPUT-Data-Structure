@@ -20,6 +20,7 @@ struct Hcode
 {
 	char data;
 	char code[100];
+	int Codecapacity;
 };
 
 
@@ -35,6 +36,6 @@ public:
 	Huffman(int i) { n = i; }
 	void CreateHTree(float a[]);
 	void CreateCodeTable(char b[]);
+	float CalculateWPL();
 	void PrintTree();
-	
 };

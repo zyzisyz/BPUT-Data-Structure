@@ -33,15 +33,45 @@ int Huffman::SelectMin(int n)
 
 void Huffman::PrintTree()
 {
-	cout << endl << "静态三叉链表表示的Huffman树" << endl;
+	cout << endl << "带权路径长度: " << CalculateWPL() << endl;
+
+	//计算编码后所需总的存储空间
+	float All_Codecapacity = 0;
+	for (int i = 0; i < n; i++)
+	{
+		All_Codecapacity += HCodeTable[i].Codecapacity;
+	}
+
+	cout << endl << "压缩比: " << 8 * n / All_Codecapacity << endl << endl;
+
+	cout << endl << "静态三叉链表表示的Huffman树" << endl << endl;
+
+	
 	for (int i = 0; i < 2 * n - 1; ++i)
 	{
 		cout << "NO " << i << endl
 			<< "	lchild: " << HTree[i].lchild << endl
 			<< "	rchild: " << HTree[i].rchild << endl
 			<< "	parent: " << HTree[i].parent << endl
-			<< "	weight: " << HTree[i].parent << endl;
+			<< "	weight: " << HTree[i].weight << endl;
 	}
+}
+
+float Huffman::CalculateWPL()
+{
+	float WPL = 0;
+	for (int i = 0; i < n; ++i)
+	{
+		int path = 0;
+		int p = i;
+		while (HTree[p].parent != -1)
+		{
+			path++;
+			p = HTree[p].parent;
+		}
+		WPL += HTree[i].weight*path;
+	}
+	return WPL;
 }
 
 //a[]里是字符的权值（or出现概率）
@@ -115,6 +145,7 @@ void Huffman::CreateCodeTable(char b[])
 			parent = HTree[child].parent;
 		}
 		HCodeTable[i].code[count] = '\0';
+		HCodeTable[i].Codecapacity = count;
 
 		//reverse the code
 		for (int j = 0; j < count ; ++j)
