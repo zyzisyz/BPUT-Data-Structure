@@ -23,16 +23,18 @@ private:
 public:
 	//根结点
 	BiNode<T>*root;
-	int GetNodesNumber() { return Nodes; }
-	BiTree() { roor = NULL; }
-	BiTree(T data[], int n);
-	BiTree(BiTree<T>&r);
-	void PreOrder(BiNode<T> *R);
-	void InOrder(BiNode<T> *R);
-	void PostOrder(BiNode<T> *R);
-	void LevelOrder(BiNode<T> *R);
+	int GetNodesNumber() { return Nodes; }			//求树结点的个数
+	BiTree() { roor = NULL; }						
+	BiTree(T data[], int n);						//构造函数
+	BiTree(BiTree<T>&r);							//复制构造函数
+	void PreOrder(BiNode<T> *R);					//前序遍历
+	void InOrder(BiNode<T> *R);						//终序遍历
+	void PostOrder(BiNode<T> *R);					//后序遍历
+	void LevelOrder(BiNode<T> *R);					//层序遍历
+	int Depth(BiNode<T> *R, int d);					//求树的深度
+	void Path(BiNode<T>* root, char n);				//求到到已知data的路径
 
-	~BiTree();
+	~BiTree();										//析构函数
 };
 
 template<class T>
@@ -140,7 +142,63 @@ void BiTree<T>::LevelOrder(BiNode<T>* R)
 }
 
 template<class T>
+inline int BiTree<T>::Depth(BiNode<T>* R, int d)
+{
+	if (R == NULL) 
+		return d;
+	if ((R->lchild == NULL) && (R->rchild == NULL)) 
+		return d + 1;
+	else
+	{
+		int m = Depth(R->lchild, d + 1); 
+		int n = Depth(R->rchild, d + 1); 
+		return n>m ? n : m; 
+	}
+}
+
+
+template<class T>
+void BiTree<T>::Path(BiNode<T>* root, char c)
+{
+	BiNode<T>* stack[1000];
+	BiNode<T>* p;
+	int tag[1000];				//创建栈所存数据的标签,1表示访问其左孩子，2表示访问右孩子 
+	int top = 0;
+	p = root;
+	do
+	{
+		while (p != NULL)
+		{
+			stack[++top] = p;
+			tag[top] = 1;
+			p = p->lchild;
+		}
+		while ((top != 0) && (tag[top] == 2))
+		{
+			if (stack[top]->data == c)
+			{                                
+				for (int i = 1; i <= top; i++)
+				{
+					cout << stack[i]->data<<" ";
+				}
+			}
+			top--;
+		}
+		if ((top != 0) && tag[top] == 1)
+		{
+			p = stack[top]->rchild;
+			tag[top] = 2;
+		}
+	} while (top != 0);
+}
+
+
+
+
+template<class T>
 BiTree<T>::~BiTree()
 {
 	Release(root);
 }
+
+
